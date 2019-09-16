@@ -4,6 +4,9 @@ import (
 	"Graphy/info"
 	"fmt"
 	"github.com/go-gl/gl/v4.6-core/gl"
+	"io/ioutil"
+	"log"
+	"path/filepath"
 	"strings"
 )
 
@@ -16,7 +19,23 @@ func NormalizeRGB(ir, ig, ib float32) (or, og, ob float32) {
 	return
 }
 
-func MakeVao(points []info.Vec3) (vao uint32) {
+func MakeVaoByVec2(points []info.Vec2) (vao uint32) {
+
+	var vbo uint32
+
+	gl.GenBuffers(1, &vbo)
+	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
+	gl.BufferData(gl.ARRAY_BUFFER, 4*(len(points)*2), gl.Ptr(points), gl.STATIC_DRAW)
+
+	gl.GenVertexArrays(1, &vao)
+	gl.BindVertexArray(vao)
+	gl.EnableVertexAttribArray(0)
+	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
+	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, 0, nil)
+
+	return
+}
+func MakeVaoByVec3(points []info.Vec3) (vao uint32) {
 
 	var vbo uint32
 
@@ -31,6 +50,33 @@ func MakeVao(points []info.Vec3) (vao uint32) {
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, nil)
 
 	return
+}
+
+func LoadShader(filePath string) (uint32, error) {
+
+	ext := strings.TrimPrefix(strings.ToLower(filepath.Ext(filePath)), ".")
+
+	var shaderType uint32
+
+	switch ext {
+
+	case "vert":
+		shaderType = gl.VERTEX_SHADER
+
+	case "frag":
+		shaderType = gl.FRAGMENT_SHADER
+
+	default:
+		log.Panicf("Unknown shader type %s", ext)
+	}
+
+	src, err := ioutil.ReadFile(filePath)
+
+	if err != nil {
+		log.Panicf("Unable to load shader %v", err)
+	}
+
+	return CompileShader(string(src)+"\x00", shaderType)
 }
 
 func CompileShader(source string, shaderType uint32) (shader uint32, err error) {

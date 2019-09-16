@@ -1,4 +1,4 @@
-package test
+package grid
 
 import (
 	"Graphy/info"
@@ -23,24 +23,24 @@ var triangle = []float32 {
 }
 */
 
-var square = []info.Vec3{
+var square = []info.Vec2{
 
 	// Half 1
-	info.NewVec3(-0.5, 0.5, 0.0),
-	info.NewVec3(-0.5, -0.5, 0.0),
-	info.NewVec3(0.5, -0.5, 0.0),
+	{-0.5, 0.5},
+	{-0.5, -0.5},
+	{0.5, -0.5},
 
 	// Half 2
-	info.NewVec3(-0.5, 0.5, 0.0),
-	info.NewVec3(0.5, 0.5, 0.0),
-	info.NewVec3(0.5, -0.5, 0.0),
+	{-0.5, 0.5},
+	{0.5, 0.5},
+	{0.5, -0.5},
 }
 
 const (
 	fps = 60
 
-	rows = 500
-	cols = 500
+	rows = 50
+	cols = 50
 
 	width  = 1000
 	height = 1000
@@ -76,7 +76,6 @@ func GridMain() {
 		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed
 
 		time.Sleep(((1000 / fps) * time.Millisecond) - elapsed)
-
 	}
 
 	glfw.Terminate()
@@ -96,7 +95,7 @@ func initCells() [][]*cell {
 
 func newCell(x, y float32) *cell {
 
-	points := make([]info.Vec3, len(square), len(square))
+	points := make([]info.Vec2, len(square), len(square))
 	copy(points, square)
 
 	for i := 0; i < len(points); i++ {
@@ -123,7 +122,7 @@ func newCell(x, y float32) *cell {
 	}
 
 	return &cell{
-		vao: utils.MakeVao(points),
+		vao: utils.MakeVaoByVec2(points),
 		pos: info.Vec2{X: x, Y: y},
 	}
 }
@@ -156,13 +155,13 @@ func initGL() uint32 {
 
 	log.Println("OpenGL version", gl.GoStr(gl.GetString(gl.VERSION)))
 
-	fragShader, err := loadShader("shaders/triangle.frag")
+	fragShader, err := loadShader("shaders/grid/graph.frag")
 
 	if err != nil {
 		panic(err)
 	}
 
-	vertShader, err := loadShader("shaders/triangle.vert")
+	vertShader, err := loadShader("shaders/grid/graph.vert")
 
 	if err != nil {
 		panic(err)
@@ -218,31 +217,4 @@ func initGLFW() *glfw.Window {
 	glfw.SwapInterval(1) // VSync
 
 	return window
-}
-
-func loadShader(filePath string) (uint32, error) {
-
-	ext := strings.TrimPrefix(strings.ToLower(filepath.Ext(filePath)), ".")
-
-	var shaderType uint32
-
-	switch ext {
-
-	case "vert":
-		shaderType = gl.VERTEX_SHADER
-
-	case "frag":
-		shaderType = gl.FRAGMENT_SHADER
-
-	default:
-		log.Panicf("Unknown shader type %s", ext)
-	}
-
-	src, err := ioutil.ReadFile(filePath)
-
-	if err != nil {
-		log.Panicf("Unable to load shader %v", err)
-	}
-
-	return utils.CompileShader(string(src)+"\x00", shaderType)
 }
