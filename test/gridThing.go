@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // https://kylewbanks.com/blog/tutorial-opengl-with-golang-part-2-drawing-the-game-board
@@ -36,11 +37,13 @@ var square = []info.Vec3{
 }
 
 const (
-	rows = 100
-	cols = 100
+	fps = 60
 
-	width  = 500
-	height = 500
+	rows = 500
+	cols = 500
+
+	width  = 1000
+	height = 1000
 )
 
 type cell struct {
@@ -66,6 +69,8 @@ func GridMain() {
 
 	for !window.ShouldClose() {
 		draw(cells, window, program)
+		time.Sleep((1000 / fps) * time.Millisecond)
+		// TODO: Calculate how long it takes to draw in order to determine actual FPS
 	}
 
 	glfw.Terminate()
