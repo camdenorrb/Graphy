@@ -68,8 +68,13 @@ func GridMain() {
 	gl.ClearColor(r, g, b, 1)
 
 	for !window.ShouldClose() {
+
+		start := time.Now()
 		draw(cells, window, program)
-		time.Sleep((1000 / fps) * time.Millisecond)
+		elapsed := time.Since(start)
+
+		time.Sleep(((1000 / fps) * time.Millisecond) - elapsed)
+
 		// TODO: Calculate how long it takes to draw in order to determine actual FPS
 	}
 
