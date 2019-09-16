@@ -73,9 +73,10 @@ func GridMain() {
 		draw(cells, window, program)
 		elapsed := time.Since(start)
 
+		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed
+
 		time.Sleep(((1000 / fps) * time.Millisecond) - elapsed)
 
-		// TODO: Calculate how long it takes to draw in order to determine actual FPS
 	}
 
 	glfw.Terminate()
