@@ -2,7 +2,7 @@ package main
 
 import (
 	"Graphy/info"
-	"Graphy/test/graph"
+	"Graphy/test/grid"
 	"runtime"
 )
 
@@ -18,6 +18,7 @@ func init() {
 
 func main() {
 
-	graph.GraphMain()
+	grid.GridMain()
+	//graph.GraphMain()
 
 }

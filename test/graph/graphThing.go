@@ -30,7 +30,10 @@ func GraphMain() {
 
 	points := initSineWave()
 
-	gl.BindVertexArray(utils.MakeVaoByVec2(points))
+	vao := utils.MakeVaoByVec2(points)
+	gl.BindVertexArray(vao)
+
+	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
 
 	r, g, b := utils.NormalizeRGB(153, 211, 205)
 	gl.ClearColor(r, g, b, 1)
@@ -38,7 +41,7 @@ func GraphMain() {
 	for !window.ShouldClose() {
 
 		start := time.Now()
-		draw(points, program, utils.MakeVaoByVec2(points), window)
+		draw(points, program, window)
 		elapsed := time.Since(start)
 
 		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed
@@ -49,12 +52,12 @@ func GraphMain() {
 	glfw.Terminate()
 }
 
-func draw(points []info.Vec2, vao, program uint32, window *glfw.Window) {
+func draw(points []info.Vec2, program uint32, window *glfw.Window) {
 
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	gl.UseProgram(program)
 
-	gl.BindVertexArray(vao)
+	//gl.BindVertexArray(vao)
 	gl.DrawArrays(gl.LINE_STRIP, 0, int32(len(points)))
 
 	glfw.PollEvents()

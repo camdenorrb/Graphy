@@ -82,7 +82,7 @@ func initCells() [][]*cell {
 	cells := make([][]*cell, rows, rows)
 	for x := 0; x < rows; x++ {
 		for y := 0; y < cols; y++ {
-			c := newCell(float64(x), float64(y))
+			c := newCell(float32(x), float32(y))
 			cells[x] = append(cells[x], c)
 		}
 	}
@@ -90,7 +90,7 @@ func initCells() [][]*cell {
 	return cells
 }
 
-func newCell(x, y float64) *cell {
+func newCell(x, y float32) *cell {
 
 	points := make([]info.Vec2, len(square), len(square))
 	copy(points, square)
@@ -102,19 +102,19 @@ func newCell(x, y float64) *cell {
 		sizeX := 1.0 / cols
 		sizeY := 1.0 / rows
 
-		posX := x * sizeX
-		posY := y * sizeY
+		posX := x * float32(sizeX)
+		posY := y * float32(sizeY)
 
 		if point.X < 0 {
-			point.X = float32((posX * 2) - 1)
+			point.X = (posX * 2) - 1
 		} else {
-			point.X = float32(((posX + sizeX) * 2) - 1)
+			point.X = ((posX + float32(sizeX)) * 2) - 1
 		}
 
 		if point.Y < 0 {
-			point.Y = float32((posY * 2) - 1)
+			point.Y = (posY * 2) - 1
 		} else {
-			point.Y = float32(((posY + sizeY) * 2) - 1)
+			point.Y = ((posY + float32(sizeY)) * 2) - 1
 		}
 	}
 
