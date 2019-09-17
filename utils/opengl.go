@@ -35,7 +35,8 @@ func MakeVaoByVec2(points []info.Vec2) (vao uint32) {
 
 	return
 }
-func MakeVaoByVec3(points []info.Vec3) (vao uint32) {
+
+func MakeVaoByVec3(points []*info.Vec3) (vao uint32) {
 
 	var vbo uint32
 

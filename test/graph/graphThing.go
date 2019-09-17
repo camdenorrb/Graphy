@@ -1,15 +1,18 @@
 package graph
 
 import (
-	"Graphy/test"
+	"Graphy/info"
 	"Graphy/utils"
 	"github.com/go-gl/gl/v4.6-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"log"
+	"math"
 	"runtime"
+	"time"
 )
 
 const (
+	fps    = 60
 	width  = 500
 	height = 500
 )
@@ -25,8 +28,37 @@ func GraphMain() {
 	window := initGLFW()
 	program := initGL()
 
-	points := initSinWave()
+	points := initSineWave()
 
+	gl.BindVertexArray(utils.MakeVaoByVec2(points))
+
+	r, g, b := utils.NormalizeRGB(153, 211, 205)
+	gl.ClearColor(r, g, b, 1)
+
+	for !window.ShouldClose() {
+
+		start := time.Now()
+		draw(points, program, utils.MakeVaoByVec2(points), window)
+		elapsed := time.Since(start)
+
+		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed
+
+		time.Sleep(((1000 / fps) * time.Millisecond) - elapsed)
+	}
+
+	glfw.Terminate()
+}
+
+func draw(points []info.Vec2, vao, program uint32, window *glfw.Window) {
+
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	gl.UseProgram(program)
+
+	gl.BindVertexArray(vao)
+	gl.DrawArrays(gl.LINE_STRIP, 0, int32(len(points)))
+
+	glfw.PollEvents()
+	window.SwapBuffers()
 }
 
 func initGL() uint32 {
@@ -37,13 +69,13 @@ func initGL() uint32 {
 
 	log.Println("OpenGL version", gl.GoStr(gl.GetString(gl.VERSION)))
 
-	fragShader, err := utils.LoadShader("shaders/graph/graph.frag")
+	fragShader, err := utils.LoadShader("shaders/graph.frag")
 
 	if err != nil {
 		panic(err)
 	}
 
-	vertShader, err := utils.LoadShader("shaders/graph/graph.vert")
+	vertShader, err := utils.LoadShader("shaders/graph.vert")
 
 	if err != nil {
 		panic(err)
@@ -99,4 +131,21 @@ func initGLFW() *glfw.Window {
 	glfw.SwapInterval(1) // VSync
 
 	return window
+}
+
+func initSineWave() []info.Vec2 {
+
+	points := make([]info.Vec2, 0)
+
+	midPoint := width / 2
+
+	for x := -midPoint; x < midPoint; x++ {
+		points = append(points, info.Vec2{
+			X: float32(x) / float32(midPoint),
+			Y: float32(math.Sin(utils.ToRadians(x))),
+		})
+
+	}
+
+	return points
 }

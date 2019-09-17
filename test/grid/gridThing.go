@@ -5,11 +5,8 @@ import (
 	"Graphy/utils"
 	"github.com/go-gl/gl/v4.6-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
-	"io/ioutil"
 	"log"
-	"path/filepath"
 	"runtime"
-	"strings"
 	"time"
 )
 
@@ -85,7 +82,7 @@ func initCells() [][]*cell {
 	cells := make([][]*cell, rows, rows)
 	for x := 0; x < rows; x++ {
 		for y := 0; y < cols; y++ {
-			c := newCell(float32(x), float32(y))
+			c := newCell(float64(x), float64(y))
 			cells[x] = append(cells[x], c)
 		}
 	}
@@ -93,7 +90,7 @@ func initCells() [][]*cell {
 	return cells
 }
 
-func newCell(x, y float32) *cell {
+func newCell(x, y float64) *cell {
 
 	points := make([]info.Vec2, len(square), len(square))
 	copy(points, square)
@@ -102,22 +99,22 @@ func newCell(x, y float32) *cell {
 
 		point := &points[i]
 
-		sizeX := float32(1.0 / cols)
-		sizeY := float32(1.0 / rows)
+		sizeX := 1.0 / cols
+		sizeY := 1.0 / rows
 
 		posX := x * sizeX
 		posY := y * sizeY
 
 		if point.X < 0 {
-			point.X = (posX * 2) - 1
+			point.X = float32((posX * 2) - 1)
 		} else {
-			point.X = ((posX + sizeX) * 2) - 1
+			point.X = float32(((posX + sizeX) * 2) - 1)
 		}
 
 		if point.Y < 0 {
-			point.Y = (posY * 2) - 1
+			point.Y = float32((posY * 2) - 1)
 		} else {
-			point.Y = ((posY + sizeY) * 2) - 1
+			point.Y = float32(((posY + sizeY) * 2) - 1)
 		}
 	}
 
@@ -155,13 +152,13 @@ func initGL() uint32 {
 
 	log.Println("OpenGL version", gl.GoStr(gl.GetString(gl.VERSION)))
 
-	fragShader, err := loadShader("shaders/grid/graph.frag")
+	fragShader, err := utils.LoadShader("shaders/graph.frag")
 
 	if err != nil {
 		panic(err)
 	}
 
-	vertShader, err := loadShader("shaders/grid/graph.vert")
+	vertShader, err := utils.LoadShader("shaders/graph.vert")
 
 	if err != nil {
 		panic(err)
