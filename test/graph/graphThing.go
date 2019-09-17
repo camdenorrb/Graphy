@@ -13,7 +13,7 @@ import (
 
 const (
 	fps    = 60
-	width  = 500
+	width  = 350
 	height = 500
 )
 
@@ -30,8 +30,9 @@ func GraphMain() {
 
 	points := initSineWave()
 
-	vao := utils.MakeVaoByVec2(points)
-	gl.BindVertexArray(vao)
+	/*vao := */
+	utils.MakeVaoByVec2(points)
+	//gl.BindVertexArray(vao)
 
 	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
 
