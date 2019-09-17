@@ -145,7 +145,7 @@ func initSineWave() []info.Vec2 {
 	for x := -midPoint; x < midPoint; x++ {
 		points = append(points, info.Vec2{
 			X: float32(x) / float32(midPoint),
-			Y: float32(math.Sin(utils.ToRadians(x))),
+			Y: float32(math.Sin(utils.ToRadians(x + midPoint))),
 		})
 
 	}
