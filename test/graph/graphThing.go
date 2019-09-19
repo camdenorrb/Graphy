@@ -13,7 +13,7 @@ import (
 
 const (
 	fps    = 60
-	width  = 500
+	width  = 350
 	height = 500
 )
 
@@ -30,8 +30,9 @@ func GraphMain() {
 
 	points := initSineWave()
 
-	vao := utils.MakeVaoByVec2(points)
-	gl.BindVertexArray(vao)
+	/*vao := */
+	utils.MakeVaoByVec2(points)
+	//gl.BindVertexArray(vao)
 
 	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
 
@@ -145,7 +146,7 @@ func initSineWave() []info.Vec2 {
 	for x := -midPoint; x < midPoint; x++ {
 		points = append(points, info.Vec2{
 			X: float32(x) / float32(midPoint),
-			Y: float32(math.Sin(utils.ToRadians(x))),
+			Y: float32(math.Sin(utils.ToRadians(x + midPoint))),
 		})
 
 	}
