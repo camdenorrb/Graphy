@@ -36,7 +36,8 @@ func GraphMain() {
 
 	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
 
-	r, g, b := utils.NormalizeRGB(153, 211, 205)
+	//utils.NormalizeRGB(153, 211, 205) Blue thing
+	r, g, b := utils.NormalizeRGB(255, 255, 255)
 	gl.ClearColor(r, g, b, 1)
 
 	for !window.ShouldClose() {
@@ -59,7 +60,7 @@ func draw(points []info.Vec2, program uint32, window *glfw.Window) {
 	gl.UseProgram(program)
 
 	//gl.BindVertexArray(vao)
-	gl.DrawArrays(gl.LINE_STRIP, 0, int32(len(points)))
+	gl.DrawArrays(gl.POINTS, 0, int32(len(points)))
 
 	glfw.PollEvents()
 	window.SwapBuffers()
@@ -84,6 +85,8 @@ func initGL() uint32 {
 	if err != nil {
 		panic(err)
 	}
+
+	gl.Enable(gl.VERTEX_PROGRAM_POINT_SIZE)
 
 	program := gl.CreateProgram()
 
