@@ -4,8 +4,13 @@ import (
 	"gorgonia.org/tensor"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
+)
+
+var (
+	newLineRegex = regexp.MustCompile(`(?s)\r?\n`)
 )
 
 func ReadTensorFromFile(filePath string, dims ...int) (*tensor.Dense, error) {
@@ -40,7 +45,8 @@ func ReadTensorFromText(input string, dims ...int) (*tensor.Dense, error) {
 // Ex: [0, 0.1, 0.2]
 func readFloatArray(input string) ([]float32, error) {
 
-	newInput := strings.Replace(input, " ", "", -1)
+	newInput := newLineRegex.ReplaceAllString(input, " ")
+	newInput = strings.Replace(newInput, " ", "", -1)
 	newInput = newInput[1:(len(newInput) - 1)]
 
 	splitValues := strings.Split(newInput, ",")

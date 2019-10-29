@@ -17,13 +17,16 @@ func main() {
 
 	//grid.GridMain()
 
-	data, err := utils.ReadTensorFromText("[1, 2]", 1, 2)
+	// TODO: Read tensor data and provide it to Main
+
+	tensor, err := utils.ReadTensorFromFile("linearData.tensor", 22)
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%v\n", data)
+	fmt.Printf("%v\n", tensor.Data())
+	fmt.Printf("%v\n", tensor)
 
-	graph.GraphMain()
+	graph.Main(tensor.Data().([]float32))
 }

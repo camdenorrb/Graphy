@@ -54,7 +54,7 @@ func init() {
 	runtime.LockOSThread()
 }
 
-func GridMain() {
+func Main() {
 
 	window := initGLFW()
 	program := initGL()
@@ -79,7 +79,9 @@ func GridMain() {
 }
 
 func initCells() [][]*cell {
-	cells := make([][]*cell, rows, rows)
+
+	cells := make([][]*cell, rows)
+
 	for x := 0; x < rows; x++ {
 		for y := 0; y < cols; y++ {
 			c := newCell(float32(x), float32(y))
@@ -92,7 +94,7 @@ func initCells() [][]*cell {
 
 func newCell(x, y float32) *cell {
 
-	points := make([]info.Vec2, len(square), len(square))
+	points := make([]info.Vec2, len(square))
 	copy(points, square)
 
 	for i := 0; i < len(points); i++ {

@@ -23,15 +23,15 @@ func init() {
 	runtime.LockOSThread()
 }
 
-func GraphMain() {
+func Main(points []float32) {
 
 	window := initGLFW()
 	program := initGL()
 
-	points := initSineWave()
+	points2 := initSineWave()
 
 	/*vao := */
-	utils.MakeVaoByVec2(points)
+	utils.MakeVaoByVec2(points2)
 	//gl.BindVertexArray(vao)
 
 	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
@@ -43,7 +43,7 @@ func GraphMain() {
 	for !window.ShouldClose() {
 
 		start := time.Now()
-		draw(points, program, window)
+		drawVec2(points2, program, window)
 		elapsed := time.Since(start)
 
 		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed
@@ -54,7 +54,19 @@ func GraphMain() {
 	glfw.Terminate()
 }
 
-func draw(points []info.Vec2, program uint32, window *glfw.Window) {
+func drawFloat32(points []float32, program uint32, window *glfw.Window) {
+
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	gl.UseProgram(program)
+
+	//gl.BindVertexArray(vao)
+	gl.DrawArrays(gl.POINTS, 0, int32(len(points)))
+
+	glfw.PollEvents()
+	window.SwapBuffers()
+}
+
+func drawVec2(points []info.Vec2, program uint32, window *glfw.Window) {
 
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	gl.UseProgram(program)
@@ -142,14 +154,14 @@ func initGLFW() *glfw.Window {
 
 func initSineWave() []info.Vec2 {
 
-	points := make([]info.Vec2, 0)
+	points := make([]info.Vec2, 0, width)
 
-	midPoint := width / 2
+	//midPoint := width / 2
 
-	for x := -midPoint; x < midPoint; x++ {
+	for x := 0; x < width; x++ {
 		points = append(points, info.Vec2{
-			X: float32(x) / float32(midPoint),
-			Y: float32(math.Sin(utils.ToRadians(x + midPoint))),
+			X: 2*(float32(x)/float32(width)) - 1,
+			Y: float32(math.Sin(utils.ToRadians(x))),
 		})
 
 	}
