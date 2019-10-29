@@ -1,0 +1,11 @@
+// Simple and support n sized arrays
+// This isn't very space optimized since it stores redundant info, ex: [x, y, z] over and over again rather than [x, [y, z]]
+// More human readable due to this tho, which is better for my needs
+
+// I'ma just make it strictly 2 dimensions for now just to test the concept
+
+// This is basically a tensor
+
+3 // dimensions
+[1, 2, 3] // x, y, z
+

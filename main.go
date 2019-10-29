@@ -1,14 +1,11 @@
 package main
 
 import (
-	"Graphy/info"
-	"Graphy/test/graph"
+	"Graphy/frontend/graph"
+	"Graphy/utils"
+	"fmt"
 	"runtime"
 )
-
-var points []info.Vec2
-
-const ()
 
 func init() {
 	// This is needed to arrange that main() runs on main thread.
@@ -19,6 +16,14 @@ func init() {
 func main() {
 
 	//grid.GridMain()
-	graph.GraphMain()
 
+	data, err := utils.ReadTensorFromText("[1, 2]", 1, 2)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%v\n", data)
+
+	graph.GraphMain()
 }
