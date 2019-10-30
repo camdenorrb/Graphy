@@ -19,7 +19,7 @@ func main() {
 
 	// TODO: Read tensor data and provide it to Main
 
-	tensor, err := utils.ReadTensorFromFile("linearData.tensor", 22)
+	tensor, err := utils.ReadTensorFromFile("linearData.tensor", 42)
 
 	if err != nil {
 		panic(err)

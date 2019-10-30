@@ -28,10 +28,11 @@ func Main(points []float32) {
 	window := initGLFW()
 	program := initGL()
 
-	points2 := initSineWave()
+	//points2 := initSineWave()
 
 	/*vao := */
-	utils.MakeVaoByVec2(points2)
+	utils.MakeVaoByFloat32(points)
+	//utils.MakeVaoByVec2(points2)
 	//gl.BindVertexArray(vao)
 
 	//gl.BindVertexArray(utils.MakeVaoByVec2(points))
@@ -43,7 +44,7 @@ func Main(points []float32) {
 	for !window.ShouldClose() {
 
 		start := time.Now()
-		drawVec2(points2, program, window)
+		drawFloat32(points, program, window)
 		elapsed := time.Since(start)
 
 		//actualFPS := ((1000 / fps) * time.Millisecond) + elapsed

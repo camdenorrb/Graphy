@@ -2,6 +2,13 @@
 
 out vec4 frag_colour;
 
+//uniform mat2 thing;
+
+/*mat2 thing = mat2(
+    1.0, 1.0
+);*/
+
+
 void main() {
 
     // RGBA - White
